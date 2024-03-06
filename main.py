@@ -15,7 +15,9 @@ if __name__ == "__main__":
     # Get observation data
     # TODO - fix the warning in synopticPy
     df_meta = get_observation_data()
+    stids = list(df_meta.columns.unique())
     pass
+
 
     # Plot
     # import from own code in plotting folder
