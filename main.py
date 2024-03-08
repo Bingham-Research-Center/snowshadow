@@ -21,3 +21,7 @@ if __name__ == "__main__":
 
     # Plot
     # import from own code in plotting folder
+
+    # Save
+
+    # Data analysis
