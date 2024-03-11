@@ -25,3 +25,7 @@ To Dos:
 * Find the big snowfalls in 2022-2023 winter and contrast snowfall between sites for each event.
 
 **Stretch goal: a case-study of a strong storm, potentially with verification of the forecast data with observations.**
+
+### Tools for productivity 
+* GitHub Projects
+* GitHub Copilot
