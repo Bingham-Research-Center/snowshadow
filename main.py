@@ -2,19 +2,21 @@
 
 import os
 
+from utils.utils import try_create, vrbls
+
 from download.download import get_observation_data
 
 if __name__ == "__main__":
     # Load data
     data_root = "./data"
-    if not os.path.exists(data_root):
-        os.makedirs(data_root)
-    obs_fpath = os.path.join(".", data_root, "basin_obs.h5")
-    metadata_fpath = os.path.join(".", data_root, "basin_ob_metadata.h5")
+    try_create(data_root)
+
+    # TODO: define regions with stid and radius, then add to dictionary
+    # regions = ["basin", "wasatch"]
 
     # Get observation data
     # TODO - fix the warning in synopticPy
-    df_meta = get_observation_data()
+    df_meta, df_obs = get_observation_data(vrbls, data_root)
     stids = list(df_meta.columns.unique())
     pass
 

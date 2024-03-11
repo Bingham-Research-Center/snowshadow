@@ -23,9 +23,23 @@ To Dos:
 * Create project structure from spaghetti code.
 * Download dataset of weather observations for Uinta Basin and Salt Lake City area.
 * Find the big snowfalls in 2022-2023 winter and contrast snowfall between sites for each event.
+* Create a `REQUIREMENTS.md` file - this should be easy in PyCharm
 
 **Stretch goal: a case-study of a strong storm, potentially with verification of the forecast data with observations.**
 
 ### Tools for productivity 
 * GitHub Projects
 * GitHub Copilot
+
+### We prefer `conda-forge`!
+Use the command 
+
+```bash
+conda config --add channels conda-forge
+```
+
+The user may need to install `pytables` separately.
+
+
+
+

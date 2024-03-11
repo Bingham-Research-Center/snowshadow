@@ -1,6 +1,7 @@
 import pickle
+import os
 
-vars = ["wind_speed", "wind_direction", "air_temp", "dew_point_temperature",
+vrbls = ["wind_speed", "wind_direction", "air_temp", "dew_point_temperature",
         "pressure", "snow_depth", "solar_radiation",
         "relative_humidity", "wind_gust", "altimeter", "soil_temp",
         "sea_level_pressure", "snow_accum", "road_temp",
@@ -20,11 +21,21 @@ vars = ["wind_speed", "wind_direction", "air_temp", "dew_point_temperature",
         "cloud_layer_3", "wet_bulb_temperature"
         ]
 
-def save_pickle(data,fpath):
+def save_pickle(data,fpath: str):
     with open(fpath, 'wb') as f:
         pickle.dump(data, f)
 
-def load_pickle(fpath):
+
+def load_pickle(fpath: str):
     with open(fpath, 'rb') as f:
         return pickle.load(f)
+
+
+def try_create(fpath):
+    if not os.path.exists(fpath):
+        os.makedirs(fpath)
+        print ("Creating directory at", fpath)
+    else:
+        print("Directory already exists at", fpath)
+    return
 
