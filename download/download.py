@@ -12,22 +12,14 @@ import numpy as np
 import pandas as pd
 
 import synoptic.services as ss
-from utils.utils import vrbls, try_create, save_pickle, load_pickle
+from utils.utils import vrbls, try_create, save_pickle, load_pickle, region_lookup
 
 ### FUNCTIONS ###
 
-def region_lookup(region: str):
-    """Look up radius string for a region.
-    """
-    region_dict = {
-        "basin": "UCL21,50",
-        # TODO: decide on stid and radius for these new regions
-        # "wasatch": "KSLC,25",
-        # "uinta": "UCL21,50",
-        }
-    return region_dict[region]
 
-def get_observation_data(vrbls: (list, tuple), data_root, radius: str = "UCL21,50", recent=3*60*60):
+
+def get_observation_data(vrbls: (list, tuple), data_root, start_date, end_date,
+                            radius: str = "UCL21,50", recent=3*60*60):
     """Get observation data from synopticPy
 
     Subtasks:
@@ -58,10 +50,10 @@ def get_observation_data(vrbls: (list, tuple), data_root, radius: str = "UCL21,5
         # df_meta = pd.read_hdf(df_meta_fpath, key='df_meta')
         df_meta = load_pickle(df_meta_fpath)
     else:
-        df_meta, df_obs = download_obs_data(vrbls, radius, recent, df_obs_fpath)
+        df_meta, df_obs = download_obs_data(vrbls, radius, recent, df_obs_fpath, start_date, end_date)
         return df_meta, df_obs
 
-def download_obs_data(vrbls, radius, recent, df_fpath):
+def download_obs_data(vrbls, radius, recent, df_fpath, start_date, end_date):
     # TODO: dates in arguments above
     df_list = list()
     df_meta = ss.stations_metadata(radius=radius, recent=recent)
@@ -69,10 +61,8 @@ def download_obs_data(vrbls, radius, recent, df_fpath):
 
     for stid in stids[:4]:
         try:
-            # TODO: not hard-code the start and end dates
-            stid_df = ss.stations_timeseries(stid=stid,start=datetime.datetime(2022,11,17,0,0,0),
-                                            end=datetime.datetime(2023,11,17,0,0,0),
-                                            vrbls=vrbls, verbose=True)
+            stid_df = ss.stations_timeseries(stid=stid,start=start_date,end=end_date,
+                                                vrbls=vrbls, verbose=True)
         except AssertionError:
             print("Skipping",stid)
             continue

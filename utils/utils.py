@@ -39,3 +39,42 @@ def try_create(fpath):
         print("Directory already exists at", fpath)
     return
 
+def region_lookup(region: str):
+    """Look up radius string for a region.
+
+    Format: "stid,radius"
+    * Radius is in miles
+    * stid is the station ID
+
+    Regions: ["uinta_basin", "uinta_mtns", "nslv", "sslv"]
+    * uinta_basin samples the Uinta Basin
+    * uinta_mtns samples the Uinta Mountains
+    * nslv samples the Northern Salt Lake Valley and Wasatch
+    * sslv samples the Southern Salt Lake Valley and Wasatch
+    """
+    region_dict = {
+        "uinta_basin": "UCL21,50",  # Pelican Lake Agrimet PELU
+        "uinta_mtns": "FPLU1,40",  # Five Points Lake (Snotel)
+        "nslv": "KOGD,50",  # Ogden-Hinckley Airport (ASOS/AWOS)
+        "sslv": "FG015,40"  # Lincoln Point (FGNet)
+        }
+    return region_dict[region]
+
+wasatch_towns = {
+    "Salt Lake City": (40.7587, -111.8762),
+    "Ogden": (41.2230, -111.9738),
+    "Provo": (40.2338, -111.6585)
+}
+
+uinta_towns = {
+    "Roosevelt": (40.2994, -109.9888),
+    "Vernal": (40.4555, -109.5287),
+    "Ouray": (40.0944, -109.6202)
+}
+
+stid_latlons = {
+    "UCL21": (40.1742, -109.6666),  # Pelican Lake Agrimet PELU
+    "FPLU1": (40.7179, -110.4672),  # Five Points Lake (Snotel)
+    "KOGD": (41.1941, -112.0168),  # Ogden-Hinckley Airport (ASOS/AWOS)
+    "FG015": (40.1342, -111.8190)  # Lincoln Point (FGNet)
+}
