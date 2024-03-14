@@ -25,7 +25,13 @@ To Dos:
 * Find the big snowfalls in 2022-2023 winter and contrast snowfall between sites for each event.
 * Create a `REQUIREMENTS.md` file - this should be easy in PyCharm
 
-**Stretch goal: a case-study of a strong storm, potentially with verification of the forecast data with observations.**
+## Stretch goal: a case-study of a strong storm, potentially with verification of the forecast data with observations.
+This requires:
+* A grid of weather data to plot the storm's movement and intensity.
+* The observations to overlay 
+
+## Stretch goal: fit a Random Forest to the system and look at patterns
+* Look at feature importance, or what input variables account for the most variance in snowfall.
 
 ### Tools for productivity 
 * GitHub Projects
