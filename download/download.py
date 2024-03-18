@@ -86,10 +86,10 @@ def download_obs_data(vrbls, radius, recent, start_date, end_date):
     df_meta = ss.stations_metadata(radius=radius, recent=recent)
     stids = get_stids_from_metadata(df_meta)
 
-    for stid in stids[:4]:
+    for stid in stids[:10]:
         try:
             stid_df = ss.stations_timeseries(stid=stid,start=start_date,end=end_date,
-                                                vrbls=vrbls, verbose=True)
+                                                vars=vrbls, verbose=True)
         except AssertionError:
             print("Skipping",stid)
             continue
