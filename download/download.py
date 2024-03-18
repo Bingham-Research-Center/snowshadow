@@ -17,7 +17,6 @@ from utils.utils import vrbls, try_create, save_pickle, load_pickle, region_look
 ### FUNCTIONS ###
 
 
-
 def get_observation_data(vrbls: (list, tuple), data_root, start_date, end_date, regions,
                             radius: str = "UCL21,50", recent=3*60*60, force_do=False):
     """Get observation data from synopticPy
@@ -46,7 +45,9 @@ def get_observation_data(vrbls: (list, tuple), data_root, start_date, end_date, 
     df_meta_fpath = os.path.join(data_root, metadata_fname)
 
     if not (os.path.exists(df_obs_fpath) and os.path.exists(df_meta_fpath)) or force_do:
-        df_obs, df_meta = concatenate_regions(vrbls, regions, df_obs_fpath, start_date, end_date, recent=recent)
+        df_obs, df_meta = concatenate_regions(vrbls, regions, start_date, end_date, recent=recent)
+        df_obs.to_hdf(df_obs_fpath, key='df_obs', mode='w')
+        save_pickle(df_meta, df_obs_fpath.replace("obs", "metadata"))
     else:
         df_meta = load_pickle(df_meta_fpath)
         df_obs = pd.read_hdf(df_obs_fpath, key='df_obs')
@@ -54,38 +55,22 @@ def get_observation_data(vrbls: (list, tuple), data_root, start_date, end_date, 
     return df_obs, df_meta
 
 
-def __concatenate_regions(vrbls, regions, df_obs_fpath, start_date, end_date ,recent=3*60*60):
-    """Concatenate dataframes from multiple regions"""
+def concatenate_regions(vrbls, regions, start_date, end_date, recent=3 * 60 * 60):
     df_obs_list = []
     df_meta_list = []
     for region in regions:
         radius = region_lookup(region)
-        df_obs, df_meta = download_obs_data(vrbls, radius, recent, df_obs_fpath, start_date, end_date)
-        df_obs_list.append(df_obs)
-        df_meta_list.append(df_meta)
-    # Concatenate the dataframes
-    df_obs = pd.concat(df_obs_list, axis=0, ignore_index=False)
-    df_meta = pd.concat(df_meta_list, axis=1, ignore_index=False)
-    return df_obs, df_meta
+        df_obs, df_meta = download_obs_data(vrbls, radius, recent, start_date, end_date)
 
-
-def concatenate_regions(vrbls, regions, df_obs_fpath, start_date, end_date, recent=3 * 60 * 60):
-    df_obs_list = []
-    df_meta_list = []
-    for region in regions:
-        radius = region_lookup(region)
-        df_obs, df_meta = download_obs_data(vrbls, radius, recent, df_obs_fpath, start_date, end_date)
-
-        # Add 'region' column
-        df_obs['region'] = region
-        df_meta['region'] = region
+        # Assign 'region' column to the observation dataframe
+        df_obs = df_obs.assign(region=region)
 
         df_obs_list.append(df_obs)
         df_meta_list.append(df_meta)
 
     # Concatenate all observation dataframes row-wise
     df_obs_combined = pd.concat(df_obs_list, axis=0)
-
+    pass
     # Concatenate all metadata dataframes row-wise
     # If concatenating column-wise was intentional and each df_meta represents a unique set of columns,
     # consider verifying this logic aligns with your data structure and needs.
@@ -96,7 +81,7 @@ def concatenate_regions(vrbls, regions, df_obs_fpath, start_date, end_date, rece
     return df_obs_combined, df_meta_combined
 
 
-def download_obs_data(vrbls, radius, recent, df_fpath, start_date, end_date):
+def download_obs_data(vrbls, radius, recent, start_date, end_date):
     df_list = list()
     df_meta = ss.stations_metadata(radius=radius, recent=recent)
     stids = get_stids_from_metadata(df_meta)
@@ -122,6 +107,7 @@ def download_obs_data(vrbls, radius, recent, df_fpath, start_date, end_date):
 
         stid_df = stid_df.assign(stid=stid, elevation=elev, latitude=stid_lat,longitude=stid_lon)
         df_list.append(stid_df)
+        del stid_df
 
     df_obs = pd.concat(df_list, axis=0, ignore_index=False)
 
@@ -132,12 +118,9 @@ def download_obs_data(vrbls, radius, recent, df_fpath, start_date, end_date):
     df_obs = df_obs.astype(change_dict)
     print("New (float32) file size:",np.sum(df_obs.memory_usage())/1E6,"MB")
 
-    # Save to file - hdf5 (.h5)
-    df_obs.to_hdf(df_fpath, key='df_obs', mode='w')
-    # df_meta.to_hdf(df_fpath, key='df_meta', mode='w')
-    save_pickle(df_meta,df_fpath.replace("obs","metadata"))
+    pass
 
-    return df_meta, df_obs
+    return df_obs, df_meta
 
 
 def get_stids_from_metadata(metadata,):

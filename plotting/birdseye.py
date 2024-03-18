@@ -26,6 +26,20 @@ class Birdseye:
         self.fig = fig
         self.ax = ax
 
+    def plot_all_stations(self, df_obs):
+        """Plot all stations on the map of Utah.
+        """
+        pass
+        self.ax.set_extent([-113, -108.5, 38.5, 42.2], ccrs.PlateCarree())
+        self.add_features_to_basemap()
+
+        for stid in df_obs["stid"].unique():
+            pass
+            lat, lon = df_obs[df_obs["stid"] == stid].head(1)[["latitude", "longitude"]].values[0]
+            self.ax.plot(lon, lat, 'ro', markersize=5, transform=ccrs.PlateCarree())
+            self.ax.text(lon, lat, stid, transform=ccrs.PlateCarree())
+        return
+
     def plot_regions(self,regions):
         """Plot map of Utah with each region labelled.
 

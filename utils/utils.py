@@ -13,17 +13,17 @@ vrbls = [
         # "sonic_wind_direction", "peak_wind_speed",
         # "ceiling",
         # "sonic_wind_speed", "soil_temp_ir",
-        "snow_smoothed", "snow_accum_manual", "snow_water_equiv",
-        "precipitable_water_vapor", "net_radiation_sw",
-        "sonic_air_temp", "sonic_vertical_vel",
-        "vertical_heat_flux", "outgoing_radiation_sw",
+        # "snow_smoothed", "snow_accum_manual", "snow_water_equiv",
+        # "precipitable_water_vapor", "net_radiation_sw",
+        # "sonic_air_temp", "sonic_vertical_vel",
+        # "vertical_heat_flux", "outgoing_radiation_sw",
         # "PM_25_concentration",
         "ozone_concentration",
         # "derived_aerosol_boundary_layer_depth",
         # "NOx_concentration", "PM_10_concentration",
         # "visibility_code", "cloud_layer_1", "cloud_layer_2",
         # "cloud_layer_3",
-        "wet_bulb_temperature"
+        # "wet_bulb_temperature"
         ]
 
 def save_pickle(data,fpath: str):
