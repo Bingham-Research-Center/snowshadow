@@ -55,13 +55,16 @@ def region_lookup(region: str):
     * uinta_basin samples the Uinta Basin
     * uinta_mtns samples the Uinta Mountains
     * nslv samples the Northern Salt Lake Valley and Wasatch
+    * cslv samples the Central Salt Lake Valley and Wasatch
     * sslv samples the Southern Salt Lake Valley and Wasatch
+
     """
     region_dict = {
         "uinta_basin": "UCL21,50",  # Pelican Lake Agrimet PELU
         "uinta_mtns": "FPLU1,40",  # Five Points Lake (Snotel)
-        "nslv": "KOGD,50",  # Ogden-Hinckley Airport (ASOS/AWOS)
-        "sslv": "FG015,40"  # Lincoln Point (FGNet)
+        "nslv": "KOGD,25",  # Ogden-Hinckley Airport (ASOS/AWOS)
+        "cslv": "WBB,25",  # SLC WBB (U of U)
+        "sslv": "FG015,25",  # Lincoln Point (FGNet)
         }
     return region_dict[region]
 
@@ -81,5 +84,6 @@ stid_latlons = {
     "UCL21": (40.1742, -109.6666),  # Pelican Lake Agrimet PELU
     "FPLU1": (40.7179, -110.4672),  # Five Points Lake (Snotel)
     "KOGD": (41.1941, -112.0168),  # Ogden-Hinckley Airport (ASOS/AWOS)
-    "FG015": (40.1342, -111.8190)  # Lincoln Point (FGNet)
+    "FG015": (40.1342, -111.8190),  # Lincoln Point (FGNet)
+    "WBB": (40.7662, -111.8476),  # SLC WBB (U of U)
 }

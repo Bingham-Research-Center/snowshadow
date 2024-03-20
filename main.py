@@ -11,7 +11,7 @@ from postprocessing.datadive import DataDive
 
 if __name__ == "__main__":
     ### SETTINGS ###
-    plot_regions = False
+    plot_regions = True
     force_do = False
 
     # Load data
@@ -24,10 +24,11 @@ if __name__ == "__main__":
 
     # TODO: might need to chop out wyoming from obs
     # start_date = datetime.datetime(2012, 11, 1, 0, 0, 0)
+    # If this date range changes, the data will need to be re-downloaded and the .h5 files overwritten
     start_date = datetime.datetime(2022, 11, 1, 0, 0, 0)
     end_date = datetime.datetime(2024, 3, 1, 0, 0, 0)
 
-    regions = ["uinta_basin", "uinta_mtns", "nslv", "sslv"]
+    regions = ["uinta_basin", "uinta_mtns", "nslv", "cslv", "sslv"]
 
     if plot_regions:
         # TODO: Create a map of Utah and the four regions (radii) labelled with some key towns
@@ -41,13 +42,18 @@ if __name__ == "__main__":
     # TODO - fix the warning in synopticPy
     df_obs, df_meta = get_observation_data(vrbls, data_root, start_date, end_date, regions, force_do=force_do)
     # TODO: make sure only vrbls are in dataframe, not just ALL the variables
+    print("Observation data has been loaded.")
+
+    # TODO: ensure h5 has no pickled-object columns
+    # e.g., convert stid strings to integers and create .txt file with the mapping
+
     pass
     all_station = Birdseye(os.path.join(figure_root, "all_stations.png"), figsize=(8,8))
-    all_station.plot_all_stations(df_obs)
+    all_station.plot_all_stations(df_obs, label_names=False)
     all_station.fig.show()
     pass
 
-
+    # 30 mins to download four regions
 
     dd = DataDive(df_obs,df_meta)
     pass

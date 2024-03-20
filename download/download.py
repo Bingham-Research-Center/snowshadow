@@ -86,7 +86,7 @@ def download_obs_data(vrbls, radius, recent, start_date, end_date):
     df_meta = ss.stations_metadata(radius=radius, recent=recent)
     stids = get_stids_from_metadata(df_meta)
 
-    for stid in stids[:10]:
+    for stid in stids:
         try:
             stid_df = ss.stations_timeseries(stid=stid,start=start_date,end=end_date,
                                                 vars=vrbls, verbose=True)

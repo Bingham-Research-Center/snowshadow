@@ -12,9 +12,10 @@ class DataDive:
         self.df = df
         self.metadata = metadata
 
-    def check_data_quality(self):
-        """
-        Performs basic data quality checks, e.g., missing values, duplicates.
+    def create_representative_obs(self):
+        """Combines data from multiple stations to create a representative observation.
+
+        TODO: argument should include regions and which stations to use - needs data analysis to choose
         """
         # Placeholder for implementation
         pass
@@ -24,6 +25,8 @@ class DataDive:
         Computes basic statistics (mean, median, std) for each variable/product.
         """
         # Placeholder for implementation
+
+        # Nice seaborn style "Joy Division" joy-plot
         pass
 
     def aggregate_time_periods(self, period='M'):
@@ -34,26 +37,7 @@ class DataDive:
         - period: str, the period over which to aggregate (e.g., 'D', 'M', 'Y')
         """
         # Placeholder for implementation
-        pass
-
-    def variable_analysis(self, variables):
-        """
-        Analyzes specific variables/products.
-
-        Parameters:
-        - variables: list of str, variables/products to analyze
-        """
-        # Placeholder for implementation
-        pass
-
-    def filter_data(self, criteria):
-        """
-        Filters the dataframe based on specified criteria.
-
-        Parameters:
-        - criteria: dict, the criteria used for filtering
-        """
-        # Placeholder for implementation
+        # How to account for UTC
         pass
 
 # Example usage
