@@ -82,10 +82,12 @@ class Birdseye:
         self.ax.add_feature(USCOUNTIES.with_scale('5m'), edgecolor='gray', zorder=2, linestyle=':', linewidth=0.5)
         return
 
-    def save(self, tight_layout=True):
+    def save(self, tight_layout=True,close_after=False):
         """Save the figure to file.
         """
         if tight_layout:
             self.fig.tight_layout()
         self.fig.savefig(self.fpath)
+        if close_after:
+            self.fig.close()
         return

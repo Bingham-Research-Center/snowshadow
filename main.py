@@ -1,4 +1,11 @@
-"""Create visualisations of results of comparing snowfall in the Uinta Basin versus Wasatch Front"""
+"""Create visualisations of results of comparing snowfall in the Uinta Basin versus Wasatch Front
+
+TODO:
+* An argparse interface to allow for different settings from command line
+* A logger to record the progress of the program
+* GUI or web interface to allow for user to interact with code
+
+"""
 
 import os
 import datetime
@@ -50,8 +57,11 @@ if __name__ == "__main__":
     pass
     all_station = Birdseye(os.path.join(figure_root, "all_stations.png"), figsize=(8,8))
     all_station.plot_all_stations(df_obs, label_names=False)
+    # Do save -> show to do tight_layout - can also do manually from all_station.fig.tight_layout()
+    # close_after keeps it open for displaying on PyCharm - can turn off for production
+    all_station.save(close_after=False)
+    # Can remove for production:
     all_station.fig.show()
-    pass
 
     # 30 mins to download four regions
 
