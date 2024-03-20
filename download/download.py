@@ -12,7 +12,7 @@ import numpy as np
 import pandas as pd
 
 import synoptic.services as ss
-from utils.utils import vrbls, try_create, save_pickle, load_pickle, region_lookup
+from utils.utils import vrbls, try_create, save_pickle, load_pickle, region_lookup, reduce_precision
 
 ### FUNCTIONS ###
 
@@ -110,14 +110,7 @@ def download_obs_data(vrbls, radius, recent, start_date, end_date):
         del stid_df
 
     df_obs = pd.concat(df_list, axis=0, ignore_index=False)
-
-    print("Original file size:",np.sum(df_obs.memory_usage())/1E6,"MB")
-    # Find columns using float64
-    col64 = [df_obs.columns[i] for i in range(len(list(df_obs.columns))) if (df_obs.dtypes.iloc[i] == np.float64)]
-    change_dict = {c:np.float32 for c in col64}
-    df_obs = df_obs.astype(change_dict)
-    print("New (float32) file size:",np.sum(df_obs.memory_usage())/1E6,"MB")
-
+    df_obs = reduce_precision(df_obs, new_dtype=np.float16)
     pass
 
     return df_obs, df_meta

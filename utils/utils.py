@@ -1,6 +1,8 @@
 import pickle
 import os
 
+import numpy as np
+
 vrbls = [
         "wind_speed", "wind_direction", "air_temp", "dew_point_temperature",
         "pressure", "snow_depth", "solar_radiation",
@@ -87,3 +89,17 @@ stid_latlons = {
     "FG015": (40.1342, -111.8190),  # Lincoln Point (FGNet)
     "WBB": (40.7662, -111.8476),  # SLC WBB (U of U)
 }
+
+def reduce_precision(df_obs, new_dtype=np.float16):
+    """Reduce the precision of the float64 columns to requested new_dtype."""
+    print("Original file size:", np.sum(df_obs.memory_usage()) / 1E6, "MB")
+
+    if new_dtype == np.float32:
+        col_precise = df_obs.select_dtypes(include=[np.float64]).columns
+    elif new_dtype == np.float16:
+        col_precise = df_obs.select_dtypes(include=[np.float64, np.float32]).columns
+
+    df_obs[col_precise] = df_obs[col_precise].astype(new_dtype)
+
+    print("New file size:", np.sum(df_obs.memory_usage()) / 1E6, "MB")
+    return df_obs
