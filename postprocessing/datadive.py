@@ -42,5 +42,5 @@ class DataDive:
 
 # Example usage
 # df_obs = pd.read_hdf('path/to/df_obs.h5')
-# df_metadata = pd.read_hdf('path/to/df_metadata.h5')
+# df_metadata = pd.read_hdf('path/to/df_metadata_bkup.h5')
 # data_dive = DataDive(df_obs)

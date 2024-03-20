@@ -76,10 +76,18 @@ def concatenate_regions(vrbls, regions, start_date, end_date, recent=3 * 60 * 60
     # consider verifying this logic aligns with your data structure and needs.
 
     # TODO: check if this is the right way to concatenate metadata : axis 1 or 0
-    df_meta_combined = pd.concat(df_meta_list, axis=0)  # Changed from axis=1 to axis=0 for row-wise concatenation
+    df_meta_combined = pd.concat(df_meta_list, axis=1)  # Changed from axis=1 to axis=0 for row-wise concatenation
 
     return df_obs_combined, df_meta_combined
 
+def concatenate_metadata_dfs(region_list, recent=3*60*60):
+    df_meta_list = []
+    for region in region_list:
+        radius = region_lookup(region)
+        df_meta = ss.stations_metadata(radius=radius, recent=recent)
+        df_meta_list.append(df_meta)
+    df_meta_combined = pd.concat(df_meta_list, axis=1)  # Changed from axis=1 to axis=0 for row-wise concatenation
+    return df_meta_combined
 
 def download_obs_data(vrbls, radius, recent, start_date, end_date):
     df_list = list()
