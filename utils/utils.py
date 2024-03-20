@@ -12,9 +12,10 @@ vrbls = [
         # "cloud_layer_1_code", "cloud_layer_2_code",
         # "cloud_layer_3_code", "cloud_low_symbol",
         # "cloud_mid_symbol", "cloud_high_symbol",
-        "sonic_wind_direction", "peak_wind_speed",
+        # "sonic_wind_direction", "peak_wind_speed",
         # "ceiling",
-        "sonic_wind_speed", "soil_temp_ir",
+        # "sonic_wind_speed",
+        "soil_temp_ir",
         "snow_smoothed", "snow_accum_manual", "snow_water_equiv",
         # "precipitable_water_vapor", "net_radiation_sw",
         # "sonic_air_temp", "sonic_vertical_vel",
@@ -25,7 +26,7 @@ vrbls = [
         # "NOx_concentration", "PM_10_concentration",
         # "visibility_code", "cloud_layer_1", "cloud_layer_2",
         # "cloud_layer_3",
-        "wet_bulb_temperature"
+        # "wet_bulb_temperature"
         ]
 
 def save_pickle(data,fpath: str):
@@ -98,6 +99,8 @@ def reduce_precision(df_obs, new_dtype=np.float16):
         col_precise = df_obs.select_dtypes(include=[np.float64]).columns
     elif new_dtype == np.float16:
         col_precise = df_obs.select_dtypes(include=[np.float64, np.float32]).columns
+    else:
+        raise ValueError("new_dtype must be np.float32 or np.float16")
 
     df_obs[col_precise] = df_obs[col_precise].astype(new_dtype)
 

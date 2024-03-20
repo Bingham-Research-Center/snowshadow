@@ -18,7 +18,7 @@ from postprocessing.datadive import DataDive
 
 if __name__ == "__main__":
     ### SETTINGS ###
-    plot_regions = True
+    plot_regions = False
     force_do = False
 
     # Load data

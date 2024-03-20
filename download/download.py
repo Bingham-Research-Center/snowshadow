@@ -89,7 +89,8 @@ def download_obs_data(vrbls, radius, recent, start_date, end_date):
     for stid in stids:
         try:
             stid_df = ss.stations_timeseries(stid=stid,start=start_date,end=end_date,
-                                                vars=vrbls, verbose=True)
+                                                vars=vrbls, verbose=True,
+                                                rename_set_1=False, rename_value_1=False)
         except AssertionError:
             print("Skipping",stid)
             continue
