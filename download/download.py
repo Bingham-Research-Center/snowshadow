@@ -38,7 +38,9 @@ def get_observation_data(vrbls: (list, tuple), data_root, start_date, end_date, 
     # Two files - observation and metadata
 
     # Create two file names depending on the radius string.
-    data_fname = "df_obs.h5"
+    # Toggle comments in next two lines to load raw or post-processed (_pp) data
+    data_fname = "df_obs_pp.h5"
+    # data_fname = "df_obs.h5"
     metadata_fname = "df_metadata.h5"
 
     df_obs_fpath = os.path.join(data_root, data_fname)

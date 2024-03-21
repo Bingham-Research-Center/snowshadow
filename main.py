@@ -19,6 +19,8 @@ from postprocessing.datadive import DataDive
 if __name__ == "__main__":
     ### SETTINGS ###
     plot_regions = False
+    plot_stations = False
+
     force_do = False
 
     # Load data
@@ -54,16 +56,19 @@ if __name__ == "__main__":
     # TODO: ensure h5 has no pickled-object columns
     # e.g., convert stid strings to integers and create .txt file with the mapping
 
-    pass
-    all_station = Birdseye(os.path.join(figure_root, "all_stations.png"), figsize=(8,8))
-    all_station.plot_all_stations(df_obs, label_names=False)
-    # Do save -> show to do tight_layout - can also do manually from all_station.fig.tight_layout()
-    # close_after keeps it open for displaying on PyCharm - can turn off for production
-    all_station.save(close_after=False)
-    # Can remove for production:
-    all_station.fig.show()
+    if plot_stations:
+        all_station = Birdseye(os.path.join(figure_root, "all_stations.png"), figsize=(8,8))
+        all_station.plot_all_stations(df_obs, label_names=False)
+        # Do save -> show to do tight_layout - can also do manually from all_station.fig.tight_layout()
+        # close_after keeps it open for displaying on PyCharm - can turn off for production
+        all_station.save(close_after=False)
+        # Can remove for production:
+        all_station.fig.show()
 
-    # 30 mins to download four regions
+    # about 45 mins to download five regions in serial on wifi at home
 
-    dd = DataDive(df_obs,df_meta)
+    # Toggling the next two lines turns on/off saving the processed dataframe to disc.
+    # This can be loaded as the "real thing" later.
+    # dd = DataDive(df_obs,df_meta, process_df=True, save_new_df='./data/df_obs_pp.h5')
+    dd = DataDive(df_obs, df_meta, process_df=False)
     pass
