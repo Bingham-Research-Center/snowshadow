@@ -18,10 +18,12 @@ from postprocessing.datadive import DataDive
 
 if __name__ == "__main__":
     ### SETTINGS ###
+    # Plotting useful maps/images
     plot_regions = False
     plot_stations = False
 
     force_do = False
+    redo_pp = False
 
     # Load data
     data_root = "./data"
@@ -35,8 +37,9 @@ if __name__ == "__main__":
     # start_date = datetime.datetime(2012, 11, 1, 0, 0, 0)
     # If this date range changes, the data will need to be re-downloaded and the .h5 files overwritten
     start_date = datetime.datetime(2022, 11, 1, 0, 0, 0)
-    end_date = datetime.datetime(2024, 3, 1, 0, 0, 0)
+    end_date = datetime.datetime(2024, 3, 25, 0, 0, 0)
 
+    # Choose regions loaded - set in utils
     regions = ["uinta_basin", "uinta_mtns", "nslv", "cslv", "sslv"]
 
     if plot_regions:
@@ -49,7 +52,8 @@ if __name__ == "__main__":
 
     # Get observation data
     # TODO - fix the warning in synopticPy
-    df_obs, df_meta = get_observation_data(vrbls, data_root, start_date, end_date, regions, force_do=force_do)
+    df_obs, df_meta = get_observation_data(vrbls, data_root, start_date, end_date, regions, force_do=force_do,
+                                                redo_pp=redo_pp)
     # TODO: make sure only vrbls are in dataframe, not just ALL the variables
     print("Observation data has been loaded.")
 
@@ -69,6 +73,8 @@ if __name__ == "__main__":
 
     # Toggling the next two lines turns on/off saving the processed dataframe to disc.
     # This can be loaded as the "real thing" later.
-    # dd = DataDive(df_obs,df_meta, process_df=True, save_new_df='./data/df_obs_pp.h5')
-    dd = DataDive(df_obs, df_meta, process_df=False)
+    if redo_pp:
+        dd = DataDive(df_obs, df_meta, process_df=True, save_new_df='./data/df_obs_pp.h5')
+    else:
+        dd = DataDive(df_obs, df_meta, process_df=False)
     pass

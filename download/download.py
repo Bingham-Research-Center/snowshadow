@@ -18,7 +18,7 @@ from utils.utils import vrbls, try_create, save_pickle, load_pickle, region_look
 
 
 def get_observation_data(vrbls: (list, tuple), data_root, start_date, end_date, regions,
-                            radius: str = "UCL21,50", recent=3*60*60, force_do=False):
+                            radius: str = "UCL21,50", recent=3*60*60, force_do=False, redo_pp=False):
     """Get observation data from synopticPy
 
     Subtasks:
@@ -37,11 +37,13 @@ def get_observation_data(vrbls: (list, tuple), data_root, start_date, end_date, 
     """
     # Two files - observation and metadata
 
-    # Create two file names depending on the radius string.
-    # Toggle comments in next two lines to load raw or post-processed (_pp) data
-    data_fname = "df_obs_pp.h5"
-    # data_fname = "df_obs.h5"
     metadata_fname = "df_metadata.h5"
+    if redo_pp:
+        # Load raw obs
+        data_fname = "df_obs.h5"
+    else:
+        # Load post-processed obs
+        data_fname = "df_obs_pp.h5"
 
     df_obs_fpath = os.path.join(data_root, data_fname)
     df_meta_fpath = os.path.join(data_root, metadata_fname)

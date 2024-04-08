@@ -14,7 +14,8 @@ class Birdseye:
     """Top-down latitude--longitude cross-section plots.
 
     TODO:
-    * Create figure showing the regions of interest (e.g., Uinta Basin, SLV) on map of Utah
+    * Create a shape-file of the Uinta Basin for overlaying on the maps
+    * Combine some methods such as setting a common extent for all plots
     """
     def __init__(self, fpath, fig=None, ax=None, ncols=1, nrows=1, figsize=(8, 8), dpi=300):
         """Set up the figure and axes for the birdseye plot.
@@ -26,19 +27,38 @@ class Birdseye:
         self.fig = fig
         self.ax = ax
 
-    def plot_all_stations(self, df_obs, label_names=True):
-        """Plot all stations on the map of Utah.
-        """
-        pass
-        self.ax.set_extent([-113, -108.5, 38.5, 42.2], ccrs.PlateCarree())
+        self.ax.set_extent([-112.6, -108.6, 39.0, 42.1], ccrs.PlateCarree())
+
+    def plot_all_stations(self, df_obs, label_names=True, marker_elevation=False):
+        """Plot all stations on the map of Utah, optionally coloring markers by elevation."""
         self.add_features_to_basemap()
 
+        # Determine elevation range for colormap
+        min_elev = df_obs['elevation'].min()
+        max_elev = df_obs['elevation'].max()
+        norm = plt.Normalize(vmin=min_elev, vmax=max_elev)
+        # TODO - make this easier to see what's low, mid, high elevation
+        cmap = plt.cm.viridis  # Choose a colormap
+
         for stid in df_obs["stid"].unique():
-            pass
             lat, lon = df_obs[df_obs["stid"] == stid].head(1)[["latitude", "longitude"]].values[0]
-            self.ax.plot(lon, lat, 'ro', markersize=5, transform=ccrs.PlateCarree())
+
+            if marker_elevation:
+                elevation = df_obs[df_obs["stid"] == stid].head(1)["elevation"].values[0]
+                color = cmap(norm(elevation))  # Map the elevation to a color
+                self.ax.plot(lon, lat, 'o', markersize=5, color=color, transform=ccrs.PlateCarree())
+            else:
+                self.ax.plot(lon, lat, 'ro', markersize=5, transform=ccrs.PlateCarree())
+
             if label_names:
-                self.ax.text(lon, lat, stid, transform=ccrs.PlateCarree())
+                self.ax.text(lon, lat, stid, transform=ccrs.PlateCarree(), fontsize=6)
+
+        # Optionally, add a colorbar to indicate the elevation scale
+        if marker_elevation:
+            sm = plt.cm.ScalarMappable(cmap=cmap, norm=norm)
+            sm.set_array([])  # You can also pass your elevations list here
+            self.fig.colorbar(sm, ax=self.ax, orientation='horizontal', label='Elevation (m)')
+
         return
 
     def plot_regions(self,regions):
@@ -48,7 +68,7 @@ class Birdseye:
 
         """
         # Set extent of basemap figure to northern 2/3 of Utah
-        self.ax.set_extent([-113, -108.5, 38.5, 42.2], ccrs.PlateCarree())
+        self.ax.set_extent([-113, -108.5, 38.7, 42.2], ccrs.PlateCarree())
         self.add_features_to_basemap()
 
         for region in regions:
@@ -72,6 +92,8 @@ class Birdseye:
         """Add features to the basemap from Cartopy, e.g., borders, rivers, countries, etc.
         """
         self.ax.coastlines()
+        self.ax.add_feature(cfeature.LAND)
+        self.ax.add_feature(cfeature.COASTLINE)
         self.ax.add_feature(cfeature.BORDERS, edgecolor="darkgray", linewidth=1)
         self.ax.add_feature(cfeature.RIVERS)
         self.ax.add_feature(cfeature.LAKES, edgecolor='b')

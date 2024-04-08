@@ -51,12 +51,13 @@ def region_lookup(region: str):
     """Look up radius string for a region.
 
     Format: "stid,radius"
+    # TODO - miles? km? nautical miles? statute miles?
     * Radius is in miles
     * stid is the station ID
 
     Regions: ["uinta_basin", "uinta_mtns", "nslv", "sslv"]
-    * uinta_basin samples the Uinta Basin
-    * uinta_mtns samples the Uinta Mountains
+    * uinta_basin samples the E Uinta Basin
+    * uinta_mtns samples the Uinta Mountains and W Basin
     * nslv samples the Northern Salt Lake Valley and Wasatch
     * cslv samples the Central Salt Lake Valley and Wasatch
     * sslv samples the Southern Salt Lake Valley and Wasatch
@@ -64,7 +65,9 @@ def region_lookup(region: str):
     """
     region_dict = {
         "uinta_basin": "UCL21,50",  # Pelican Lake Agrimet PELU
-        "uinta_mtns": "FPLU1,40",  # Five Points Lake (Snotel)
+        # "uinta_mtns": "RCKU1,50",  # Rock Creek
+        # "uinta_mtns": "FPLU1,40",  # Five Points Lake (Snotel)
+        "uinta_mtns": "MTHU1,45",  # Moon Lake (HADS)
         "nslv": "KOGD,25",  # Ogden-Hinckley Airport (ASOS/AWOS)
         "cslv": "WBB,25",  # SLC WBB (U of U)
         "sslv": "FG015,25",  # Lincoln Point (FGNet)
@@ -85,7 +88,9 @@ uinta_towns = {
 
 stid_latlons = {
     "UCL21": (40.1742, -109.6666),  # Pelican Lake Agrimet PELU
-    "FPLU1": (40.7179, -110.4672),  # Five Points Lake (Snotel)
+    # "FPLU1": (40.7179, -110.4672),  # Five Points Lake (Snotel)
+    # "RCKU1": (40.54875,-110.69292),  # Rock Creek (Snotel)
+    "MTHU1": (40.56167, -110.49222),  # Moon Lake (HADS)
     "KOGD": (41.1941, -112.0168),  # Ogden-Hinckley Airport (ASOS/AWOS)
     "FG015": (40.1342, -111.8190),  # Lincoln Point (FGNet)
     "WBB": (40.7662, -111.8476),  # SLC WBB (U of U)
