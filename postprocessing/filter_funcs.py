@@ -38,8 +38,7 @@ def replace_max_values(df, stid, vrbl, max_value=None):
 
     # Interpolate the missing values linearly - TODO fix warning
     df_filtered = df_filtered.infer_objects(copy=False)
-    df_filtered = df_filtered.interpolate(method='linear')
-    pass
+    df_filtered[vrbl] = df_filtered[vrbl].interpolate(method='linear')
     return df_filtered
 
 
@@ -97,10 +96,10 @@ def filter_data(df, stid, vrbl, kernel_size, filt_method="max_median") -> pd.Dat
     if filt_method == "max_median":
         if stid.startswith("COOP"):
             filtered_df = df
-            print("No max filtering for COOP station.")
+            # print("No max filtering for COOP station.")
         else:
             filtered_df = replace_max_values(df, stid, vrbl)
-            print("Max filtering applied.")
+            # print("Max filtering applied.")
         filtered_df = apply_median_filter(filtered_df, stid, vrbl, kernel_size=kernel_size)
     else:
         raise NotImplementedError(f"Filter method {filt_method} not implemented.")
