@@ -43,7 +43,8 @@ def get_observation_data(vrbls: (list, tuple), data_root, start_date, end_date, 
         data_fname = "df_obs.h5"
     else:
         # Load post-processed obs
-        data_fname = "df_obs_pp.h5"
+        # TODO - not be hard-coded. Better way to do filtering and subsetting of raw data before this
+        data_fname = "df_obs_pp_2023.h5"
 
     df_obs_fpath = os.path.join(data_root, data_fname)
     df_meta_fpath = os.path.join(data_root, metadata_fname)
